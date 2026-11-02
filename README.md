@@ -1,6 +1,6 @@
 # Kalé
 
-**Application de commande et livraison de repas** — Application mobile de commande de repas, présentée avec l'écran cuisine du restaurant : liste des restaurants proches, menu illustré, panier avec réduction, paiement Orange Money, MTN MoMo ou espèces, puis suivi en direct (préparation, livreur sur la carte, livraison). Le restaurant accepte et prépare la commande depuis son écran, et le suivi du client se met à jour.
+**Application de commande et livraison de repas** — Application mobile de commande de repas, présentée avec l'écran cuisine du restaurant : liste des restaurants proches, menu illustré, panier avec réduction, paiement par carte, Apple Pay ou espèces, puis suivi en direct (préparation, livreur sur la carte, livraison). Le restaurant accepte et prépare la commande depuis son écran, et le suivi du client se met à jour.
 
 **Démo en ligne : [https://lordlennyx.github.io/kale-livraison-repas/](https://lordlennyx.github.io/kale-livraison-repas/)**
 
@@ -20,7 +20,7 @@ Spot de présentation (30 s) : [media/spot-30s.mp4](https://lordlennyx.github.io
 
 - **Stack :** HTML, CSS, JavaScript natif, SVG animé
 - **Typographies :** Unbounded, Onest
-- **Évolutions possibles :** application native (Flutter, React Native), back-end temps réel (Firebase, Supabase), géolocalisation réelle des livreurs, API Mobile Money
+- **Évolutions possibles :** application native (Flutter, React Native), back-end temps réel (Firebase, Supabase), géolocalisation réelle des livreurs, paiement Stripe
 
 | Bureau | Mobile |
 |---|---|

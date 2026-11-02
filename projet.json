@@ -3,7 +3,7 @@
  "nom": "Kalé",
  "type": "Application de commande et livraison de repas",
  "categorie": "Applications mobiles",
- "resume": "Application mobile de commande de repas, présentée avec l'écran cuisine du restaurant : liste des restaurants proches, menu illustré, panier avec réduction, paiement Orange Money, MTN MoMo ou espèces, puis suivi en direct (préparation, livreur sur la carte, livraison). Le restaurant accepte et prépare la commande depuis son écran, et le suivi du client se met à jour.",
+ "resume": "Application mobile de commande de repas, présentée avec l'écran cuisine du restaurant : liste des restaurants proches, menu illustré, panier avec réduction, paiement par carte, Apple Pay ou espèces, puis suivi en direct (préparation, livreur sur la carte, livraison). Le restaurant accepte et prépare la commande depuis son écran, et le suivi du client se met à jour.",
  "fonctions": [
   "Accueil : adresse de livraison, recherche, promotion, catégories, restaurants avec note, délai et frais",
   "Fiche restaurant : menu par rubriques, ajout au panier en un geste, barre de panier flottante",
@@ -12,5 +12,5 @@
   "Écran cuisine en temps réel : nouvelles commandes, en préparation, prêtes, chiffre du jour"
  ],
  "stack": "HTML, CSS, JavaScript natif, SVG animé",
- "extra": {"Typographies": "Unbounded, Onest", "Évolutions possibles": "application native (Flutter, React Native), back-end temps réel (Firebase, Supabase), géolocalisation réelle des livreurs, API Mobile Money"}
+ "extra": {"Typographies": "Unbounded, Onest", "Évolutions possibles": "application native (Flutter, React Native), back-end temps réel (Firebase, Supabase), géolocalisation réelle des livreurs, paiement Stripe"}
 }

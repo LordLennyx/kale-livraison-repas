@@ -1,12 +1,12 @@
 {
  "titre": "<em>Kalé</em>, livraison de repas",
  "type": "Application mobile · commande de repas",
- "sous_titre": "Restaurants, menu, panier, Mobile Money, cuisine et livreur en direct",
+ "sous_titre": "Restaurants, menu, panier, paiement, cuisine et livreur en direct",
  "couleur": "#e8432f",
  "graine": 25,
  "voix": [
   [3.3, "Kalé, une application de commande et de livraison de repas,"],
-  [8.2, "on choisit son restaurant, on remplit son panier, et on paie par Mobile Money,"],
+  [8.2, "on choisit son restaurant, on remplit son panier, et on paie par carte,"],
   [15.6, "la cuisine reçoit la commande en direct, et le livreur se suit sur la carte jusqu'à la porte."]
  ],
  "etapes": [
