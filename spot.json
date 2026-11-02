@@ -1,0 +1,24 @@
+{
+ "titre": "<em>Kalé</em>, livraison de repas",
+ "type": "Application mobile · commande de repas",
+ "sous_titre": "Restaurants, menu, panier, Mobile Money, cuisine et livreur en direct",
+ "couleur": "#e8432f",
+ "graine": 25,
+ "voix": [
+  [3.3, "Kalé, une application de commande et de livraison de repas,"],
+  [8.2, "on choisit son restaurant, on remplit son panier, et on paie par Mobile Money,"],
+  [15.6, "la cuisine reçoit la commande en direct, et le livreur se suit sur la carte jusqu'à la porte."]
+ ],
+ "etapes": [
+  {"t": "wait", "ms": 900},
+  {"t": "click", "sel": ".rest[data-r=mama]", "pause": 900},
+  {"t": "click", "sel": "[data-a=ndole]", "pause": 450},
+  {"t": "click", "sel": "[data-a=poulet]", "pause": 450},
+  {"t": "eval", "js": "document.getElementById('p-rest').scrollTo({top:600,behavior:'smooth'})", "pause": 700},
+  {"t": "click", "sel": "[data-a=jus]", "pause": 700},
+  {"t": "click", "sel": "#cartbar", "pause": 1300},
+  {"t": "click", "sel": "#order", "pause": 1600},
+  {"t": "click", "sel": ".tk.hot button", "pause": 1500},
+  {"t": "eval", "js": "window.__cuisine()", "pause": 6200}
+ ]
+}

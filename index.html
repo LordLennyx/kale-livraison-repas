@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kalé — commande et livraison de repas</title>
+<meta name="description" content="Kalé, application de commande et de livraison de repas : restaurants, menu, panier, paiement Mobile Money, suivi du livreur en direct, et l'écran cuisine du restaurant qui reçoit la commande.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='10' fill='%23e8432f'/%3E%3Ccircle cx='16' cy='17' r='8' fill='none' stroke='%23fff3d6' stroke-width='3'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#f7efe4;--ink:#22140f;--mute:#8a7a70;--line:#eadfd2;--acc:#e8432f;--yel:#ffc94a;--grn:#2c8a57;--card:#fff}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:400 14px/1.4 'Onest',system-ui,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+button,input{font:inherit;color:inherit}button{cursor:pointer}
+.disp{font-family:'Unbounded',sans-serif}
+.stage{display:grid;grid-template-columns:auto 1fr;gap:40px;max-width:1280px;margin:auto;padding:28px 32px;align-items:start}
+.intro{grid-column:1/-1;display:flex;justify-content:space-between;align-items:end;gap:20px}
+.intro h1{font:700 34px/1.05 'Unbounded';letter-spacing:-.02em}
+.intro h1 em{font-style:normal;color:var(--acc)}
+.intro p{color:var(--mute);max-width:34em}
+/* téléphone */
+.phone{width:380px;height:780px;border-radius:48px;background:#120a07;padding:12px;box-shadow:0 30px 60px -30px rgba(34,20,15,.6);position:sticky;top:20px}
+.scr{width:100%;height:100%;border-radius:38px;background:#fffaf3;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:100px;height:26px;border-radius:20px;background:#120a07;z-index:9}
+.sb{height:46px;flex:none;display:flex;justify-content:space-between;align-items:flex-end;padding:0 26px 4px;font-size:12px;font-weight:700}
+.pg{position:absolute;inset:46px 0 0;overflow-y:auto;transition:transform .4s cubic-bezier(.2,.8,.2,1),opacity .3s;background:#fffaf3;scrollbar-width:none}
+.pg::-webkit-scrollbar{display:none}
+.pg.off{transform:translateX(100%);pointer-events:none}
+.pg.back{transform:translateX(-30%);opacity:.0;pointer-events:none}
+.pad{padding:6px 18px 110px}
+.hello{display:flex;justify-content:space-between;align-items:center;margin:4px 0 14px}
+.hello small{color:var(--mute)}
+.hello b{font-size:16px}
+.srch{display:flex;align-items:center;gap:8px;background:#f2e8db;border-radius:14px;padding:12px 14px;color:var(--mute);margin-bottom:14px}
+.promo{border-radius:20px;background:var(--acc);color:#fff;padding:18px;position:relative;overflow:hidden;margin-bottom:18px}
+.promo b{font:700 19px/1.15 'Unbounded';display:block;max-width:60%}
+.promo small{opacity:.85}
+.promo svg{position:absolute;right:-14px;bottom:-18px;width:150px}
+.cats{display:flex;gap:8px;overflow-x:auto;margin-bottom:16px;scrollbar-width:none}
+.cats button{border:0;background:#f2e8db;border-radius:100px;padding:8px 14px;font-weight:600;white-space:nowrap;font-size:13px}
+.cats button.on{background:var(--ink);color:#fff}
+.h2{font:700 15px 'Unbounded';margin:6px 0 10px}
+.rest{display:block;width:100%;border:0;background:none;text-align:left;margin-bottom:16px;padding:0}
+.rest .ph{height:120px;border-radius:18px;position:relative;overflow:hidden;margin-bottom:8px}
+.rest .ph svg{position:absolute;right:10px;top:50%;transform:translateY(-50%);height:110%}
+.rest .tag{position:absolute;left:10px;top:10px;background:#fff;border-radius:8px;padding:3px 8px;font-size:11.5px;font-weight:700}
+.rest b{font-size:15.5px}
+.rest .m{display:flex;gap:10px;color:var(--mute);font-size:12.5px}
+.star{color:#e2a21a}
+.hero{height:190px;position:relative;overflow:hidden}
+.hero svg.big{position:absolute;right:-30px;top:10px;height:220px}
+.backb{position:absolute;left:14px;top:10px;width:38px;height:38px;border-radius:50%;border:0;background:#fff;box-shadow:0 4px 10px rgba(0,0,0,.15);z-index:2;font-size:18px}
+.rh{padding:14px 18px 6px}
+.rh h2{font:700 21px/1.1 'Unbounded'}
+.rh .m{display:flex;gap:12px;color:var(--mute);font-size:12.5px;margin-top:6px}
+.dish{display:grid;grid-template-columns:1fr 86px;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.dish small{color:var(--mute);display:block;margin:2px 0 6px;font-size:12.5px;line-height:1.35}
+.dish .p{font-weight:700}
+.dish .im{position:relative}
+.dish .im svg{width:86px;height:86px}
+.dish .add{position:absolute;right:-4px;bottom:-4px;width:32px;height:32px;border-radius:50%;border:0;background:var(--ink);color:#fff;font-size:18px;line-height:1}
+.dish .add.n{background:var(--acc);font-size:13px;font-weight:700}
+.cartbar{position:absolute;left:14px;right:14px;bottom:18px;background:var(--acc);color:#fff;border:0;border-radius:18px;padding:15px 18px;display:flex;justify-content:space-between;font-weight:700;box-shadow:0 10px 24px -8px rgba(232,67,47,.7);transform:translateY(130%);transition:transform .35s cubic-bezier(.2,.8,.2,1);z-index:5}
+.cartbar.on{transform:none}
+.cartbar i{background:#ffffff33;border-radius:8px;padding:0 8px;font-style:normal}
+.cl{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.cl svg{width:52px;height:52px;flex:none}
+.cl .n{flex:1}.cl small{color:var(--mute)}
+.qq{display:flex;align-items:center;gap:8px;background:#f2e8db;border-radius:10px;padding:3px}
+.qq button{border:0;background:#fff;border-radius:7px;width:26px;height:26px;font-weight:700}
+.sum div{display:flex;justify-content:space-between;padding:4px 0;color:var(--mute)}
+.sum .t{color:var(--ink);font-weight:700;font-size:17px;padding-top:8px}
+.pm{display:grid;gap:8px;margin:8px 0}
+.pm button{display:flex;align-items:center;gap:10px;border:2px solid var(--line);background:#fff;border-radius:14px;padding:11px;text-align:left}
+.pm button.on{border-color:var(--ink)}
+.pm i{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:11px;color:#fff}
+.addr{background:#f2e8db;border-radius:14px;padding:12px;margin:10px 0 14px;font-size:13px}
+.big{width:100%;border:0;background:var(--ink);color:#fff;border-radius:16px;padding:16px;font-weight:700;font-size:15px}
+.map{height:300px;position:relative;background:#efe5d6;overflow:hidden}
+.map svg{width:100%;height:100%}
+.steps{margin:14px 0}
+.stp{display:flex;gap:12px;align-items:flex-start;padding-bottom:14px;position:relative;color:var(--mute)}
+.stp::before{content:"";position:absolute;left:11px;top:24px;bottom:0;width:2px;background:var(--line)}
+.stp:last-child::before{display:none}
+.stp i{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);background:#fff;flex:none;display:grid;place-items:center}
+.stp.done{color:var(--ink)}.stp.done i{background:var(--grn);border-color:var(--grn)}
+.stp.cur{color:var(--ink);font-weight:700}.stp.cur i{border-color:var(--acc);box-shadow:0 0 0 4px #e8432f33}
+.rider{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.eta{font:700 26px 'Unbounded'}
+/* cuisine */
+.kitchen{min-width:0}
+.kh{display:flex;justify-content:space-between;align-items:center;background:var(--ink);color:#fff;border-radius:18px 18px 0 0;padding:14px 18px}
+.kh b{font-family:'Unbounded';font-size:15px}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:12.5px}.live::before{content:"";width:8px;height:8px;border-radius:50%;background:#4ade80;animation:bl 1.4s infinite}
+@keyframes bl{50%{opacity:.3}}
+.kb{background:#fff;border-radius:0 0 18px 18px;padding:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;min-height:420px}
+.kc h4{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute);margin:2px 2px 8px}
+.tk{border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px;background:#fffaf3}
+.tk.hot{border-color:var(--acc);box-shadow:0 0 0 3px #e8432f22;animation:in .5s}
+@keyframes in{from{transform:translateY(-12px);opacity:0}}
+.tk .t{display:flex;justify-content:space-between;font-weight:700}
+.tk ul{list-style:none;padding:0;margin:8px 0;font-size:13px}
+.tk li{padding:2px 0}
+.tk .ft{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--mute)}
+.tk button{border:0;background:var(--ink);color:#fff;border-radius:9px;padding:7px 11px;font-weight:600;font-size:12.5px}
+.tk button.g{background:var(--grn)}
+.kstats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.kstats div{background:#fff;border-radius:14px;padding:14px}
+.kstats span{font-size:12px;color:var(--mute)}.kstats b{display:block;font:700 22px 'Unbounded';margin-top:3px}
+.tab{display:none}
+.toast{position:absolute;left:14px;right:14px;top:52px;background:var(--ink);color:#fff;border-radius:14px;padding:11px 14px;font-size:13px;z-index:20;transform:translateY(-220%);opacity:0;transition:.35s cubic-bezier(.2,.8,.2,1)}
+.toast.on{transform:none;opacity:1}
+@media (max-width:1000px){.stage{grid-template-columns:1fr;padding:16px}.intro{flex-direction:column;align-items:flex-start}.intro h1{font-size:26px}.phone{margin:auto;position:static}.kb{grid-template-columns:1fr}}
+@media (max-width:440px){.stage{padding:0;gap:16px}.intro{padding:16px 16px 0}.phone{width:100%;height:100svh;max-height:780px;border-radius:0;padding:0;box-shadow:none}.scr{border-radius:0}.notch{display:none}.kitchen{padding:0 16px 30px}.kstats{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="stage">
+ <div class="intro"><h1>Kalé, <em>la commande</em><br>de repas, des deux côtés.</h1><p>À gauche, l'application du client. À droite, l'écran cuisine du restaurant, qui reçoit la commande en direct. Commandez, puis faites avancer la commande en cuisine : le suivi du client se met à jour.</p></div>
+ <div class="phone"><div class="scr" id="scr"><div class="notch"></div><div class="sb"><span id="hr">12:30</span><span>4G ▮▮▮</span></div>
+  <div class="toast" id="toast"></div>
+  <section class="pg" id="p-home"></section>
+  <section class="pg off" id="p-rest"></section>
+  <section class="pg off" id="p-cart"></section>
+  <section class="pg off" id="p-track"></section>
+  <button class="cartbar" id="cartbar"><span><i id="cbn">0</i> &nbsp;Voir le panier</span><span id="cbt"></span></button>
+ </div></div>
+ <div class="kitchen"><div class="kh"><b>Écran cuisine · Chez Mama Ewondo</b><span class="live">en ligne</span></div>
+  <div class="kb"><div class="kc"><h4>Nouvelles</h4><div id="k0"></div></div><div class="kc"><h4>En préparation</h4><div id="k1"></div></div><div class="kc"><h4>Prêtes, livreur en route</h4><div id="k2"></div></div></div>
+  <div class="kstats"><div><span>Commandes du jour</span><b id="ks1">27</b></div><div><span>Chiffre d'affaires</span><b id="ks2">186 500 F</b></div><div><span>Temps moyen</span><b>18 min</b></div></div>
+ </div>
+</div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const F=n=>n.toLocaleString('fr-FR').replace(/ /g,' ')+' F';
+// assiettes dessinées : vue de dessus
+function plate(k,sz){const A={
+ ndole:['#3f6b2a','#5d8a3a','#c88a4a'],poisson:['#d9a441','#b5651d','#7fa650'],poulet:['#c9772c','#e4b15c','#3c8d3a'],beignets:['#d99a3e','#b8732a','#c23b2a'],
+ riz:['#f3eadb','#d24a2a','#7fa650'],eru:['#2f5a24','#4f7c30','#8a5a2b'],plantain:['#f0b43c','#d98f1f','#7a3b1e'],jus:['#c2185b','#e85d8f','#fff'],salade:['#7fb24a','#d24a2a','#f3d36b'],brochettes:['#8a3b1e','#c4692a','#e8c25a']}[k];
+ let s=`<svg viewBox="0 0 100 100" ${sz?`width="${sz}" height="${sz}"`:''}><circle cx="50" cy="52" r="46" fill="#00000012"/><circle cx="50" cy="50" r="46" fill="#fff"/><circle cx="50" cy="50" r="38" fill="#f6efe6"/>`;
+ let r=k.length*7;const R=()=>(r=(r*9301+49297)%233280)/233280;
+ if(k==='jus')return `<svg viewBox="0 0 100 100" ${sz?`width="${sz}" height="${sz}"`:''}><circle cx="50" cy="52" r="34" fill="#00000012"/><circle cx="50" cy="50" r="32" fill="#fff"/><circle cx="50" cy="50" r="27" fill="${A[0]}"/><circle cx="44" cy="44" r="9" fill="${A[1]}" opacity=".6"/><rect x="58" y="12" width="5" height="40" rx="2" fill="#2b2b2b" transform="rotate(25 60 32)"/></svg>`;
+ s+=`<ellipse cx="44" cy="52" rx="26" ry="22" fill="${A[0]}"/>`;
+ for(let i=0;i<14;i++){const a=R()*6.28,d=R()*20;s+=`<circle cx="${44+Math.cos(a)*d}" cy="${52+Math.sin(a)*d*.8}" r="${2+R()*4}" fill="${A[1]}"/>`}
+ s+=`<ellipse cx="68" cy="40" rx="11" ry="14" fill="${A[2]}" transform="rotate(30 68 40)"/>`;
+ if(k==='brochettes')s+=`<path d="M18 78 82 22" stroke="#b08a5a" stroke-width="2"/>`+[0,1,2,3].map(i=>`<rect x="${26+i*12}" y="${58-i*11}" width="11" height="11" rx="3" fill="${i%2?A[1]:A[0]}" transform="rotate(-42 ${31+i*12} ${63-i*11})"/>`).join('');
+ return s+'</svg>'}
+const RESTS=[
+ {id:'mama',n:'Chez Mama Ewondo',c:'Camerounais',note:4.8,t:'20-30',fee:500,bg:'#ffd9a8',pl:'ndole',tag:'-20 % ce midi'},
+ {id:'braise',n:'La Braise de Kribi',c:'Grillades',note:4.6,t:'30-40',fee:700,bg:'#f8c8b8',pl:'poisson',tag:'Livraison offerte'},
+ {id:'bowl',n:'Green Bowl Bastos',c:'Healthy',note:4.7,t:'15-25',fee:500,bg:'#cfe6b5',pl:'salade',tag:'Nouveau'},
+ {id:'beig',n:'Beignets Tantine Rosa',c:'Petit-déj',note:4.9,t:'10-20',fee:300,bg:'#ffe39a',pl:'beignets',tag:'Populaire'}];
+const MENU=[['ndole','Ndolé crevettes et miondo','Feuilles de ndolé, arachides, crevettes fraîches, bâtons de manioc',3500,'Plats'],
+ ['poulet','Poulet DG','Poulet sauté, plantains mûrs, carottes, haricots verts',4500,'Plats'],
+ ['eru','Eru et water fufu','Eru, waterleaf, peau de bœuf, huile rouge',3000,'Plats'],
+ ['poisson','Poisson braisé','Bar entier mariné, sauce piment, bâton de manioc',5000,'Grillades'],
+ ['brochettes','Brochettes de bœuf (4)','Soya épicé au poivre de Penja, oignons',2000,'Grillades'],
+ ['plantain','Plantains frits','Plantains mûrs dorés, portion généreuse',1000,'Accompagnements'],
+ ['riz','Riz sauté maison','Riz parfumé, légumes, sauce tomate',1200,'Accompagnements'],
+ ['jus','Jus de foléré','Bissap maison, gingembre, menthe, 50 cl',800,'Boissons']];
+let cart={},orders=[],oid=1043,stage=0,pay='om';
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._);t._=setTimeout(()=>t.classList.remove('on'),2400)}
+let cur='home';
+function go(p,back){const a=$('#p-'+cur),b=$('#p-'+p);if(back){a.classList.add('off');b.classList.remove('back','off')}else{a.classList.add('back');b.classList.remove('off','back')}b.scrollTop=0;cur=p;bar()}
+function home(){$('#p-home').innerHTML=`<div class="pad"><div class="hello"><div><small>Livrer à</small><br><b>Bastos, rue 1.839 ▾</b></div><span style="width:40px;height:40px;border-radius:50%;background:var(--yel);display:grid;place-items:center;font-weight:800">AE</span></div>
+ <div class="srch"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Un plat, un restaurant…</div>
+ <div class="promo"><small>Ce midi seulement</small><b>-20 % chez Mama Ewondo</b>${plate('ndole',0).replace('<svg','<svg')}</div>
+ <div class="cats">${['Tout','Camerounais','Grillades','Healthy','Petit-déj','Boissons'].map((c,i)=>`<button class="${i?'':'on'}">${c}</button>`).join('')}</div>
+ <div class="h2">Près de vous</div>${RESTS.map(r=>`<button class="rest" data-r="${r.id}"><div class="ph" style="background:${r.bg}"><span class="tag">${r.tag}</span>${plate(r.pl)}</div><b>${r.n}</b><div class="m"><span class="star">★ ${String(r.note).replace('.',',')}</span><span>${r.c}</span><span>${r.t} min</span><span>${r.fee?F(r.fee):'offerte'}</span></div></button>`).join('')}</div>`}
+$('#p-home').onclick=e=>{const r=e.target.closest('.rest');if(r){rest();go('rest')}const c=e.target.closest('.cats button');if(c){$$('.cats button').forEach(x=>x.classList.toggle('on',x===c))}};
+function rest(){const cats=[...new Set(MENU.map(m=>m[4]))];
+ $('#p-rest').innerHTML=`<div class="hero" style="background:#ffd9a8"><button class="backb" data-back>‹</button>${plate('poulet').replace('<svg','<svg class="big"')}</div><div class="rh"><h2>Chez Mama Ewondo</h2><div class="m"><span class="star">★ 4,8 (1 240 avis)</span><span>20-30 min</span><span>Livraison 500 F</span></div></div>
+ <div class="pad" style="padding-top:0">${cats.map(c=>`<div class="h2" style="margin-top:16px">${c}</div>`+MENU.filter(m=>m[4]===c).map(m=>`<div class="dish"><div><b>${m[1]}</b><small>${m[2]}</small><span class="p">${F(m[3])}</span></div><div class="im">${plate(m[0])}<button class="add ${cart[m[0]]?'n':''}" data-a="${m[0]}">${cart[m[0]]||'+'}</button></div></div>`).join('')).join('')}</div>`}
+$('#p-rest').onclick=e=>{if(e.target.closest('[data-back]'))return go('home',1);const b=e.target.closest('[data-a]');if(b){cart[b.dataset.a]=(cart[b.dataset.a]||0)+1;b.textContent=cart[b.dataset.a];b.classList.add('n');b.animate([{transform:'scale(1.35)'},{transform:'none'}],{duration:300});bar()}};
+window.__ajoute=k=>{cart[k]=(cart[k]||0)+1;if(cur==='rest')rest();bar()};
+const nb=()=>Object.values(cart).reduce((a,b)=>a+b,0),sub=()=>Object.entries(cart).reduce((a,[k,q])=>a+MENU.find(m=>m[0]===k)[3]*q,0);
+function bar(){$('#cartbar').classList.toggle('on',nb()>0&&cur==='rest');$('#cbn').textContent=nb();$('#cbt').textContent=F(sub())}
+$('#cartbar').onclick=()=>{cartPg();go('cart')};
+function cartPg(){const s=sub(),rem=Math.round(s*.2/50)*50,tot=s-rem+500;
+ $('#p-cart').innerHTML=`<div class="pad"><div style="display:flex;align-items:center;gap:10px;margin:4px 0 12px"><button class="backb" style="position:static" data-back>‹</button><b class="disp" style="font-size:17px">Votre panier</b></div>
+ ${Object.entries(cart).map(([k,q])=>{const m=MENU.find(x=>x[0]===k);return `<div class="cl">${plate(k)}<div class="n"><b>${m[1]}</b><br><small>${F(m[3])}</small></div><div class="qq"><button data-d="${k}" data-v="-1">−</button><b>${q}</b><button data-d="${k}" data-v="1">+</button></div></div>`}).join('')}
+ <div class="addr"><b>Livraison</b><br>Bastos, rue 1.839, portail vert en face de la boulangerie<br><small style="color:var(--mute)">Appeler en arrivant : 6 90 11 22 33</small></div>
+ <div class="sum"><div><span>Sous-total</span><span>${F(s)}</span></div><div><span>Réduction -20 %</span><span style="color:var(--grn)">−${F(rem)}</span></div><div><span>Livraison</span><span>${F(500)}</span></div><div class="t"><span>Total</span><span>${F(tot)}</span></div></div>
+ <div class="h2" style="margin-top:16px">Paiement</div><div class="pm">${[['om','Orange Money','#ff7900','OM'],['momo','MTN Mobile Money','#ffcc00','MoMo'],['cash','Espèces à la livraison','#22140f','F']].map(([k,n,c,l])=>`<button class="${pay===k?'on':''}" data-p="${k}"><i style="background:${c};color:${k==='momo'?'#22140f':'#fff'}">${l}</i>${n}</button>`).join('')}</div>
+ <button class="big" id="order" style="margin-top:10px">Commander · ${F(tot)}</button></div>`}
+$('#p-cart').onclick=e=>{if(e.target.closest('[data-back]'))return go('rest',1);const d=e.target.closest('[data-d]');if(d){cart[d.dataset.d]+= +d.dataset.v;if(cart[d.dataset.d]<=0)delete cart[d.dataset.d];if(!nb()){rest();return go('rest',1)}cartPg()}
+ const p=e.target.closest('[data-p]');if(p){pay=p.dataset.p;cartPg()}if(e.target.id==='order')order()};
+function order(){const s=sub(),tot=s-Math.round(s*.2/50)*50+500;const o={id:oid++,items:{...cart},tot,st:0,t:new Date(),mine:true};orders.unshift(o);cart={};stage=0;
+ $('#ks1').textContent=+$('#ks1').textContent+1;$('#ks2').textContent=F(parseInt($('#ks2').textContent.replace(/\D/g,''))+tot);
+ kitchen();track();go('track');toast(pay==='cash'?'Commande envoyée au restaurant':'Paiement confirmé · commande envoyée')}
+window.__commande=order;
+const ST=['Commande reçue','En préparation','Le livreur est en route','Livrée'];
+function track(){const o=orders.find(x=>x.mine);if(!o)return;const s=o.st,eta=[28,22,9,0][s];
+ $('#p-track').innerHTML=`<div class="map"><svg viewBox="0 0 380 300"><rect width="380" height="300" fill="#efe5d6"/>
+ <path d="M0 70h380M0 190h380M90 0v300M250 0v300M0 260 380 120" stroke="#fff" stroke-width="14"/><path d="M0 70h380M0 190h380M90 0v300M250 0v300" stroke="#e4d6c3" stroke-width="1"/>
+ <rect x="110" y="90" width="120" height="80" rx="8" fill="#d9e7c8"/><rect x="270" y="210" width="90" height="70" rx="8" fill="#d9e7c8"/><rect x="10" y="90" width="60" height="80" rx="6" fill="#e9dccb"/><rect x="270" y="88" width="100" height="16" rx="4" fill="#e9dccb"/>
+ <path id="route" d="M60 50 L90 70 L90 190 L250 190 L250 255 L320 255" fill="none" stroke="${s>=2?'#e8432f':'#22140f55'}" stroke-width="4" stroke-dasharray="${s>=2?'0':'6 6'}" stroke-linecap="round"/>
+ <g transform="translate(60 50)"><circle r="14" fill="#22140f"/><path d="M-5-3h10v7h-10z" fill="#fff"/></g>
+ <g transform="translate(320 255)"><circle r="16" fill="#e8432f" opacity=".2"><animate attributeName="r" values="10;22;10" dur="2s" repeatCount="indefinite"/></circle><circle r="9" fill="#e8432f" stroke="#fff" stroke-width="3"/></g>
+ <g id="moto" style="display:${s>=2&&s<3?'':'none'}"><circle r="13" fill="#ffc94a" stroke="#22140f" stroke-width="2.5"/><path d="M-6 3h12M-4-2l4-4 4 4" stroke="#22140f" stroke-width="2" fill="none" stroke-linecap="round"/></g></svg></div>
+ <div class="pad" style="padding-top:16px"><div style="display:flex;justify-content:space-between;align-items:end"><div><small style="color:var(--mute)">Commande n° ${o.id}</small><div class="eta">${s===3?'Livrée':eta+' min'}</div></div><span style="color:var(--mute);font-size:12.5px">${s===3?'Bon appétit !':'arrivée estimée'}</span></div>
+ <div class="steps">${ST.map((t,i)=>`<div class="stp ${i<s||s===3?'done':i===s?'cur':''}"><i>${i<s||s===3?'<svg width="12" height="12" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10" stroke="#fff" stroke-width="3.5" fill="none"/></svg>':''}</i><div>${t}<br><small style="color:var(--mute);font-weight:400">${['Chez Mama Ewondo a bien reçu votre commande','Le chef prépare vos plats','Brice arrive sur sa moto, plaque LT 482','Remise en main propre'][i]}</small></div></div>`).join('')}</div>
+ ${s>=2?`<div class="rider"><span style="width:42px;height:42px;border-radius:50%;background:#3c6e9f;color:#fff;display:grid;place-items:center;font-weight:700">BN</span><div style="flex:1"><b>Brice N.</b><br><small style="color:var(--mute)">★ 4,9 · 1 820 livraisons</small></div><button class="qq" style="border:0;padding:9px 12px;font-weight:700">Appeler</button></div>`:''}
+ <button class="big" style="margin-top:16px;background:#f2e8db;color:var(--ink)" id="again">Retour à l'accueil</button></div>`;
+ $('#again').onclick=()=>{rest();go('home',1)};if(s===2)ride()}
+function ride(){const p=$('#route'),m=$('#moto');if(!p||!m)return;const L=p.getTotalLength();let t0=performance.now();
+ (function f(t){if(!document.body.contains(m))return;const k=Math.min(1,(t-t0)/9000),pt=p.getPointAtLength(k*L);m.setAttribute('transform',`translate(${pt.x} ${pt.y})`);if(k<1)requestAnimationFrame(f);else{const o=orders.find(x=>x.mine);if(o&&o.st===2){o.st=3;kitchen();track();toast('Commande livrée. Bon appétit !')}}})(t0)}
+// cuisine
+const FAKE=[{id:1039,items:{poulet:2,jus:2},tot:10600,st:1,t:new Date(Date.now()-9*6e4)},{id:1040,items:{ndole:1,plantain:1},tot:4100,st:0,t:new Date(Date.now()-2*6e4)},{id:1037,items:{poisson:1,brochettes:2},tot:7700,st:2,t:new Date(Date.now()-21*6e4)}];
+orders=[...FAKE];
+function kitchen(){[0,1,2].forEach(s=>{$('#k'+s).innerHTML=orders.filter(o=>o.st===s).map(o=>`<div class="tk ${o.mine&&o.st===0?'hot':''}"><div class="t"><span>#${o.id}${o.mine?' · vous':''}</span><span>${F(o.tot)}</span></div><ul>${Object.entries(o.items).map(([k,q])=>`<li>${q} × ${MENU.find(m=>m[0]===k)[1]}</li>`).join('')}</ul><div class="ft"><span>il y a ${Math.max(1,Math.round((Date.now()-o.t)/6e4))} min</span>${s<2?`<button data-o="${o.id}" class="${s?'g':''}">${s?'Prête':'Accepter'}</button>`:'<span>livreur : Brice</span>'}</div></div>`).join('')||'<p style="color:var(--mute);font-size:13px;padding:6px">Aucune commande</p>'})}
+$('.kb').onclick=e=>{const b=e.target.closest('button[data-o]');if(!b)return;const o=orders.find(x=>x.id===+b.dataset.o);o.st++;kitchen();if(o.mine){track();toast(o.st===1?'Le restaurant prépare votre commande':'Votre livreur est en route')}};
+window.__cuisine=()=>{const o=orders.find(x=>x.mine&&x.st<2);if(o){o.st++;kitchen();track();toast(o.st===1?'Le restaurant prépare votre commande':'Votre livreur est en route')}};
+setInterval(()=>{$('#hr').textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})},1000);
+home();rest();kitchen();
+</script>
+</body>
+</html>
